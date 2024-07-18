@@ -5,7 +5,7 @@ import Barcode from 'react-barcode'
 
 const page = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const ref = useRef();
+    const ref = useRef<Barcode | null>(null);
     return (
         <div>
             <Printer />
