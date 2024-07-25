@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useMemo } from 'react';
 import { MaterialReactTable, MRT_Cell, MRT_Row } from 'material-react-table';
 import {
