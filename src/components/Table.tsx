@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { MaterialReactTable } from 'material-react-table';
+import { MaterialReactTable, MRT_Cell, MRT_Row } from 'material-react-table';
 import {
     Button,
     MenuItem,
@@ -12,8 +12,21 @@ import {
 import { toast, ToastContainer } from 'react-toastify';
 import printBarcode from '@/lib/print';
 
-const TableComponent = () => {
-    const [tableData, setTableData] = useState([
+// Define types for the table data
+interface TableRow {
+    item: string;
+    brand: string;
+    type: string;
+    color: string;
+    status: string;
+    asset: string;
+    qt: string;
+    relatedPO: string;
+    comments: string;
+}
+
+const TableComponent: React.FC = () => {
+    const [tableData, setTableData] = useState<TableRow[]>([
         { item: 'Mouse', brand: 'Logitech', type: 'Accessory', color: 'Black', status: 'New', asset: '', qt: '0', relatedPO: '', comments: 'Mouse and Keyboard' },
         { item: 'Toner', brand: 'HP', type: 'Accessory', color: 'Black', status: 'New', asset: '', qt: '0', relatedPO: '', comments: '' },
         { item: 'Monitor', brand: 'Dell', type: 'Accessory', color: 'Black', status: 'New', asset: '', qt: '0', relatedPO: '', comments: '' },
@@ -42,8 +55,8 @@ const TableComponent = () => {
                     head: {
                         width: '10px',
                         height: '10px',
-                        backgroundColor: '#ffffff', // Red background for header cells
-                        color: '#ff5c57', // White text for better contrast
+                        backgroundColor: '#ffffff',
+                        color: '#ff5c57',
                         fontWeight: 'bold',
                     },
                 },
@@ -72,10 +85,10 @@ const TableComponent = () => {
         },
     });
 
-    const handleSubmit = (rowData) => {
+    const handleSubmit = (rowData: TableRow) => {
         console.log('Submitted row data:', rowData);
-        if (rowData.qt == 0){
-            toast.error('the QT must be grater than 0', {
+        if (parseInt(rowData.qt, 10) === 0) {
+            toast.error('The QT must be greater than 0', {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -84,10 +97,10 @@ const TableComponent = () => {
                 draggable: true,
                 progress: undefined,
             });
-            return ; 
+            return;
         }
         try {
-            for (let i = 0; i < rowData.qt; i++) {
+            for (let i = 0; i < parseInt(rowData.qt, 10); i++) {
                 printBarcode(rowData.asset);
             }
             toast.success('Printed Success', {
@@ -99,8 +112,8 @@ const TableComponent = () => {
                 draggable: true,
                 progress: undefined,
             });
-        } catch (error:any) {
-            toast.error(error, {
+        } catch (error: any) {
+            toast.error(error.message, {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -111,8 +124,6 @@ const TableComponent = () => {
             });
             console.log(error);
         }
-
-
     };
 
     const columns = useMemo(() => [
@@ -121,14 +132,14 @@ const TableComponent = () => {
             accessorKey: 'brand',
             header: 'Brand',
             enableSorting: false,
-            Cell: ({ row, cell, table }) => (
+            Cell: ({ row, cell, table }: { row: MRT_Row<TableRow>; cell: MRT_Cell<TableRow>; table: any }) => (
                 <Select
                     value={cell.getValue() || ''}
                     onChange={(e) => {
                         table.setEditingCell(null);
                         setTableData((old) =>
                             old.map((oldRow, index) =>
-                                index === row.index ? { ...oldRow, brand: e.target.value } : oldRow
+                                index === row.index ? { ...oldRow, brand: e.target.value as string } : oldRow
                             )
                         );
                     }}
@@ -144,14 +155,14 @@ const TableComponent = () => {
             accessorKey: 'type',
             header: 'Type',
             enableSorting: false,
-            Cell: ({ row, cell, table }) => (
+            Cell: ({ row, cell, table }: { row: MRT_Row<TableRow>; cell: MRT_Cell<TableRow>; table: any }) => (
                 <Select
                     value={cell.getValue() || ''}
                     onChange={(e) => {
                         table.setEditingCell(null);
                         setTableData((old) =>
                             old.map((oldRow, index) =>
-                                index === row.index ? { ...oldRow, type: e.target.value } : oldRow
+                                index === row.index ? { ...oldRow, type: e.target.value as string } : oldRow
                             )
                         );
                     }}
@@ -167,14 +178,14 @@ const TableComponent = () => {
             accessorKey: 'color',
             header: 'Color',
             enableSorting: false,
-            Cell: ({ row, cell, table }) => (
+            Cell: ({ row, cell, table }: { row: MRT_Row<TableRow>; cell: MRT_Cell<TableRow>; table: any }) => (
                 <Select
                     value={cell.getValue() || ''}
                     onChange={(e) => {
                         table.setEditingCell(null);
                         setTableData((old) =>
                             old.map((oldRow, index) =>
-                                index === row.index ? { ...oldRow, color: e.target.value } : oldRow
+                                index === row.index ? { ...oldRow, color: e.target.value as string } : oldRow
                             )
                         );
                     }}
@@ -190,14 +201,14 @@ const TableComponent = () => {
             accessorKey: 'status',
             header: 'Status',
             enableSorting: false,
-            Cell: ({ row, cell, table }) => (
+            Cell: ({ row, cell, table }: { row: MRT_Row<TableRow>; cell: MRT_Cell<TableRow>; table: any }) => (
                 <Select
                     value={cell.getValue() || ''}
                     onChange={(e) => {
                         table.setEditingCell(null);
                         setTableData((old) =>
                             old.map((oldRow, index) =>
-                                index === row.index ? { ...oldRow, status: e.target.value } : oldRow
+                                index === row.index ? { ...oldRow, status: e.target.value as string } : oldRow
                             )
                         );
                     }}
@@ -213,14 +224,14 @@ const TableComponent = () => {
             accessorKey: 'asset',
             header: 'Asset',
             enableSorting: false,
-            Cell: ({ row, cell, table }) => (
+            Cell: ({ row, cell, table }: { row: MRT_Row<TableRow>; cell: MRT_Cell<TableRow>; table: any }) => (
                 <TextField
                     value={cell.getValue() || ''}
                     onChange={(e) => {
                         table.setEditingCell(null);
                         setTableData((old) =>
                             old.map((oldRow, index) =>
-                                index === row.index ? { ...oldRow, asset: e.target.value } : oldRow
+                                index === row.index ? { ...oldRow, asset: e.target.value as string } : oldRow
                             )
                         );
                     }}
@@ -232,14 +243,14 @@ const TableComponent = () => {
             accessorKey: 'qt',
             header: 'QT',
             enableSorting: false,
-            Cell: ({ row, cell, table }) => (
+            Cell: ({ row, cell, table }: { row: MRT_Row<TableRow>; cell: MRT_Cell<TableRow>; table: any }) => (
                 <Select
                     value={cell.getValue() || ''}
                     onChange={(e) => {
                         table.setEditingCell(null);
                         setTableData((old) =>
                             old.map((oldRow, index) =>
-                                index === row.index ? { ...oldRow, qt: e.target.value } : oldRow
+                                index === row.index ? { ...oldRow, qt: e.target.value as string } : oldRow
                             )
                         );
                     }}
@@ -255,14 +266,14 @@ const TableComponent = () => {
             accessorKey: 'relatedPO',
             header: 'Related PO Number',
             enableSorting: false,
-            Cell: ({ row, cell, table }) => (
+            Cell: ({ row, cell, table }: { row: MRT_Row<TableRow>; cell: MRT_Cell<TableRow>; table: any }) => (
                 <TextField
                     value={cell.getValue() || ''}
                     onChange={(e) => {
                         table.setEditingCell(null);
                         setTableData((old) =>
                             old.map((oldRow, index) =>
-                                index === row.index ? { ...oldRow, relatedPO: e.target.value } : oldRow
+                                index === row.index ? { ...oldRow, relatedPO: e.target.value as string } : oldRow
                             )
                         );
                     }}
@@ -273,14 +284,13 @@ const TableComponent = () => {
         {
             accessorKey: 'comments',
             header: 'Comments',
-            enableSorting: false
+            enableSorting: false,
         },
         {
             accessorKey: 'actions',
             header: 'Actions',
             enableSorting: false,
-
-            Cell: ({ row }) => (
+            Cell: ({ row }: { row: MRT_Row<TableRow> }) => (
                 <Button
                     variant="contained"
                     color="primary"
@@ -293,14 +303,13 @@ const TableComponent = () => {
         },
     ], []);
 
-
     return (
         <ThemeProvider theme={theme}>
             <Typography component="div" style={{ width: '100%' }}>
                 <MaterialReactTable
                     columns={columns}
                     data={tableData}
-                    enableColumnActions={false} // This removes the three-dot menu
+                    enableColumnActions={false}
                     muiTableHeadCellProps={{
                         sx: {
                             '& .Mui-TableHeadCell-Content': {
@@ -316,6 +325,7 @@ const TableComponent = () => {
                     }}
                 />
             </Typography>
+            <ToastContainer />
         </ThemeProvider>
     );
 };
