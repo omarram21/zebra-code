@@ -87,7 +87,7 @@ const TableComponent: React.FC = () => {
         },
     });
 
-    const handleSubmit = (rowData: TableRow) => {
+    const handleSubmit = async (rowData: TableRow) => {
         console.log('Submitted row data:', rowData);
         if (parseInt(rowData.qt, 10) === 0) {
             toast.error('The QT must be greater than 0', {
@@ -103,7 +103,7 @@ const TableComponent: React.FC = () => {
         }
         try {
             for (let i = 0; i < parseInt(rowData.qt, 10); i++) {
-                printBarcode(rowData.asset);
+                await printBarcode(rowData.asset);
             }
             toast.success('Printed Success', {
                 position: "bottom-right",
@@ -296,7 +296,7 @@ const TableComponent: React.FC = () => {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => handleSubmit(row.original)}
+                    onClick={async () =>await handleSubmit(row.original)}
                     size="small"
                 >
                     Submit
@@ -327,7 +327,6 @@ const TableComponent: React.FC = () => {
                     }}
                 />
             </Typography>
-            <ToastContainer />
         </ThemeProvider>
     );
 };
