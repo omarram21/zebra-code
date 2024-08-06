@@ -29,7 +29,7 @@ export default function RootLayout({
           </div>
           <Footer />
         </main>
-        <ToastContainer /> 
+        <ToastContainer />
 
       </body>
     </html>
