@@ -8,7 +8,7 @@ import InventoryTable from '@/components/InventoryTable';
 
 const page = () => {
     return (
-        <div className='bg-slate-50 grainy-light px-32 pt-12 flex flex-1 '>
+        <div className='bg-slate-50 grainy-light px-32 pt-12 flex flex-1 justify-center '>
             <InventoryTable />
         </div>
     )

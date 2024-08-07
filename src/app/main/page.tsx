@@ -1,10 +1,13 @@
-"use client";
+
 import React, { useRef } from 'react'
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
+import sql from '@/lib/db';
 
 
-const page = () => {
+const page =  async () => {
+
+    
     return (
         <div className='bg-slate-50 grainy-light px-32  flex flex-1 '>
             <div className="flex justify-between flex flex-1 items-center">

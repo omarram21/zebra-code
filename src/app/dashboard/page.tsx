@@ -31,7 +31,7 @@ const page = () => {
                     {/* <button onClick={handlePrint}>Print this out!</button> */}
                     {/* <PrintableComponent ref={componentRef} /> */}
                 </div>
-                <TableComponent />
+                {/* <TableComponent /> */}
             {/* </MaxWidthWrapper> */}
         </div>
     )
